@@ -5,18 +5,9 @@ from sys import exit
 
 pygame.init()
 
-def snake_animation():
-    global snake_img, snake_img2, snake_index, snake_move, snake_surf
-    snake_index += 0.1
-
-    if snake_index > len(snake_move):
-        snake_index = 0
-
-    snake_surf = pygame.transform.rotozoom(snake_move[int(snake_index)], 0, 3)
-
 screen_height = 600
 screen_width = 800
-screen = pygame.display.set_mode((screen_height, screen_width))
+screen = pygame.display.set_mode((screen_width, screen_height)) #první šířka
 
 clock = pygame.time.Clock()
 
@@ -42,25 +33,34 @@ running = True
 while running:
     screen.fill("green")
     #kontrola hry (start, end)
-    for event in pygame.event.get:
+    for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False 
             exit()
 
     key = pygame.key.get_pressed()
 
-    if key[pygame.k_w]:
+    if key[pygame.K_w]: #velké K
         snake_rect.top -= snake_speed
-    if key[pygame.k_a]:
+    if key[pygame.K_a]:
         snake_rect.left -= snake_speed
-    if key[pygame.k_s]:
+    if key[pygame.K_s]:
         snake_rect.bottom += snake_speed
-    if key[pygame.k_d]:
+    if key[pygame.K_d]:
         snake_rect.right += snake_speed
 
+    def snake_animation():
+        global snake_img, snake_img2, snake_index, snake_move, snake_surf
+        snake_index += 0.1
 
-screen.blit(snake_surf, snake_rect)  
-pygame.display.update()
-clock.tick(60)
+        if snake_index > len(snake_move):
+            snake_index = 0
+
+        snake_surf = pygame.transform.rotozoom(snake_move[int(snake_index)], 0, 3)
 
 
+    screen.blit(snake_surf, snake_rect)  
+    pygame.display.update()
+    clock.tick(60)
+
+pygame.quit()
